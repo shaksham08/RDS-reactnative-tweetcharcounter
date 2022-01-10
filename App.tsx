@@ -1,114 +1,94 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * Generated with the TypeScript template
- * https://github.com/react-native-community/react-native-template-typescript
- *
- * @format
- */
+import React, {useState} from 'react';
+import {Text, View, StyleSheet, TextInput} from 'react-native';
 
-import React from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+interface TweetMessageProps {
+  tweet: string;
+}
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+const setColor = (length: number) => {
+  if (length >= 10) {
+    return 'gray';
+  } else if (length > 0) {
+    return 'rgb(204,204,0)';
+  } else {
+    return 'red';
+  }
+};
 
-const Section: React.FC<{
-  title: string;
-}> = ({children, title}) => {
-  const isDarkMode = useColorScheme() === 'dark';
+const setBackground = (length: number) => {
+  if (length >= 10) {
+    return 'rgba(40,40,40,0.1)';
+  } else if (length > 0) {
+    return 'rgba(255,250,205,0.1)';
+  } else {
+    return 'rgba(255,0,0,0.1)';
+  }
+};
+
+const TweetMessage: React.FC<TweetMessageProps> = ({tweet}) => {
   return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
+    <View>
+      <Text style={{...styles.message, color: setColor(280 - tweet.length)}}>
+        {280 - tweet.length} charcters Remaining
       </Text>
     </View>
   );
 };
 
-const App = () => {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
+// Props or State'
+const App: React.FC<{}> = () => {
+  const [tweet, setTweet] = useState<string>('');
 
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+    <View style={styles.container}>
+      <Text style={styles.heading}>Tweet Character Counter</Text>
+      <TextInput
+        style={{
+          ...styles.input,
+          borderColor: setColor(280 - tweet.length),
+          backgroundColor: setBackground(280 - tweet.length),
+        }}
+        multiline
+        numberOfLines={10}
+        onChangeText={value => setTweet(value)}
+        value={tweet}
+        placeholder="Lets Tweet!!!"
+      />
+      <TweetMessage tweet={tweet} />
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
+  container: {
+    flex: 1,
+    paddingTop: 40,
+    backgroundColor: '#ecf0f1',
+    padding: 8,
+    borderColor: 'purple',
+    borderWidth: 2,
   },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
+  heading: {
+    margin: 10,
+    fontSize: 30,
+    fontWeight: 'bold',
+    textAlign: 'center',
   },
-  sectionDescription: {
-    marginTop: 8,
+  paragraph: {
+    margin: 24,
     fontSize: 18,
-    fontWeight: '400',
+    fontWeight: 'bold',
+    textAlign: 'center',
   },
-  highlight: {
-    fontWeight: '700',
+  input: {
+    borderWidth: 2,
+    borderRadius: 20,
+  },
+  message: {
+    marginTop: 30,
+    fontSize: 30,
+    fontWeight: 'bold',
+    textAlign: 'center',
   },
 });
 
